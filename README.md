@@ -21,75 +21,61 @@ The integration follows a multi-stage event-driven process designed for reliabil
 
 Supported attribute types with automatic mapping to Adobe Commerce:
 
--   **`boolean`** - Maps to `backend_type: "int"`, `frontend_input: "boolean"`
--   **`decimal`** - Maps to `backend_type: "decimal"`, `frontend_input: "text"`
--   **`integer`** - Maps to `backend_type: "int"`, `frontend_input: "text"`
--   **`single_select`** - Maps to `backend_type: "int"`, `frontend_input: "select"`
--   **`multi_select`** - Maps to `backend_type: "int"`, `frontend_input: "multiselect"`
--   **`date`** - Maps to `backend_type: "datetime"`, `frontend_input: "date"`
--   **`time`** - Maps to `backend_type: "datetime"`, `frontend_input: "text"`
--   **`date_time`** - Maps to `backend_type: "datetime"`, `frontend_input: "datetime"`
--   **`text`** - Maps to `backend_type: "varchar"`, `frontend_input: "text"`
--   **`formatted_text`** - Maps to `backend_type: "varchar"`, `frontend_input: "text"`
+- **`boolean`** - Maps to `backend_type: "int"`, `frontend_input: "boolean"`
+- **`decimal`** - Maps to `backend_type: "decimal"`, `frontend_input: "text"`
+- **`integer`** - Maps to `backend_type: "int"`, `frontend_input: "text"`
+- **`single_select`** - Maps to `backend_type: "int"`, `frontend_input: "select"`
+- **`multi_select`** - Maps to `backend_type: "int"`, `frontend_input: "multiselect"`
+- **`date`** - Maps to `backend_type: "datetime"`, `frontend_input: "date"`
+- **`time`** - Maps to `backend_type: "datetime"`, `frontend_input: "text"`
+- **`date_time`** - Maps to `backend_type: "datetime"`, `frontend_input: "datetime"`
+- **`text`** - Maps to `backend_type: "varchar"`, `frontend_input: "text"`
+- **`formatted_text`** - Maps to `backend_type: "varchar"`, `frontend_input: "text"`
 
 ### Categories
 
--   **Hierarchical category structure** with parent-child relationships
--   **Dependency validation** ensuring parent categories exist before processing
--   **Automatic category mapping** from Bluestone to Adobe Commerce format
--   **Category movement** support when parent relationships change
+- **Hierarchical category structure** with parent-child relationships
+- **Dependency validation** ensuring parent categories exist before processing
+- **Automatic category mapping** from Bluestone to Adobe Commerce format
+- **Category movement** support when parent relationships change
 
 ### Products
 
--   **Simple products** (`SINGLE` type) - Individual standalone products
--   **Configurable products** (`VARIANT_GROUP` type) - Parent products with variants
--   **Variant products** (`VARIANT` type) - Child products linked to configurable parents
--   **Automatic variant linking** and configurable product option setup
--   **Two-stage validation** ensuring all dependencies exist before processing
+- **Simple products** (`SINGLE` type) - Individual standalone products
+- **Configurable products** (`VARIANT_GROUP` type) - Parent products with variants
+- **Variant products** (`VARIANT` type) - Child products linked to configurable parents
+- **Automatic variant linking** and configurable product option setup
+- **Two-stage validation** ensuring all dependencies exist before processing
 
 ### Assets (Media)
 
 Supported media types for product synchronization:
 
--   **Image formats**: `image/jpeg`, `image/jpg`, `image/png`, `image/gif`
--   **Automatic media download** from Bluestone and base64 conversion for Adobe Commerce
--   **Position-based media gallery** management
+- **Image formats**: `image/jpeg`, `image/jpg`, `image/png`, `image/gif`
+- **Automatic media download** from Bluestone and base64 conversion for Adobe Commerce
+- **Position-based media gallery** management
 
 ## Key Features
 
 ### Entity Processing
 
--   **Attributes**: Immediate synchronization with Adobe Commerce using strategy pattern mapping
--   **Categories**: Dependency validation ensuring parent categories exist before processing
--   **Products**: Two-stage validation and individual event-driven processing
--   **Assets**: Media synchronization with support for multiple image formats
+- **Attributes**: Immediate synchronization with Adobe Commerce using strategy pattern mapping
+- **Categories**: Dependency validation ensuring parent categories exist before processing
+- **Products**: Two-stage validation and individual event-driven processing
+- **Assets**: Media synchronization with support for multiple image formats
 
 ### Advanced Mechanisms
 
--   **Hash-Based Change Detection**: Prevents processing of unchanged entities using MD5 hashing
--   **Retry Mechanism**: HTTP 599 error codes trigger automatic retries with dependency resolution
--   **Concurrency Control**: Distributed locking prevents parallel processing of same entities
--   **Persistent Mapping**: Maintains relationships between Bluestone and Adobe Commerce entities
+- **Hash-Based Change Detection**: Prevents processing of unchanged entities using MD5 hashing
+- **Retry Mechanism**: HTTP 599 error codes trigger automatic retries with dependency resolution
+- **Concurrency Control**: Distributed locking prevents parallel processing of same entities
+- **Persistent Mapping**: Maintains relationships between Bluestone and Adobe Commerce entities
 
 ### Event Flow
 
 ```
 Webhook → SYNC_DONE → EntityToSynchronize → EntityDataReady → Processing
 ```
-
-## Prerequisites
-
-### Create App Builder Project
-
-Go to the [Adobe developer console](https://developer.adobe.com/console) portal
-
--   Click on `Create project from template`
--   Select `App Builder`
--   Choose a name and title
--   Select stage workspace or create a new one
--   Add the following API services (select default OAuth server to server):
-    -   I/O Events
-    -   I/O Management API
 
 ## Configuration
 
@@ -98,13 +84,13 @@ Go to the [Adobe developer console](https://developer.adobe.com/console) portal
 >
 > For PaaS (On-Premise/Cloud):
 >
-> -   Must include your base site URL + `/rest/` suffix
-> -   Example: `https://[environment-name].us-4.magentosite.cloud/rest/`
+> - Must include your base site URL + `/rest/` suffix
+> - Example: `https://[environment-name].us-4.magentosite.cloud/rest/`
 >
 > For SaaS:
 >
-> -   Must be the REST API endpoint provided by Adobe Commerce
-> -   Example: `https://na1-sandbox.api.commerce.adobe.com/[tenant-id]/`
+> - Must be the REST API endpoint provided by Adobe Commerce
+> - Example: `https://na1-sandbox.api.commerce.adobe.com/[tenant-id]/`
 >
 > Make sure to use your actual environment name or tenant ID in the URL. The examples above use placeholder values.
 
@@ -112,23 +98,23 @@ Go to the [Adobe developer console](https://developer.adobe.com/console) portal
 
 With the new announcement of **Adobe Commerce as a Cloud Service** (ACCS), requests to Commerce will now use different authentication strategies depending on the flavor you're using:
 
--   If you're using the traditional Adobe Commerce Platform (PaaS) offering, you'll need to authenticate via OAuth1, like you've been doing until now.
+- If you're using the traditional Adobe Commerce Platform (PaaS) offering, you'll need to authenticate via OAuth1, like you've been doing until now.
 
--   If you're using the new cloud service (SaaS) offering, you'll need to authenticate your requests using [Adobe Identity Management System](https://experienceleague.adobe.com/en/docs/experience-manager-learn/foundation/authentication/adobe-ims-authentication-technical-video-understand) (IMS).
+- If you're using the new cloud service (SaaS) offering, you'll need to authenticate your requests using [Adobe Identity Management System](https://experienceleague.adobe.com/en/docs/experience-manager-learn/foundation/authentication/adobe-ims-authentication-technical-video-understand) (IMS).
 
 #### \[PaaS\] Commerce OAuth1 - Configure a new Integration in Commerce
 
 Configure a new Integration to secure the calls to Commerce from App Builder using OAuth by following these steps:
 
--   In the Commerce Admin, navigate to System > Extensions > Integrations.
--   Click the `Add New Integration` button. The following screen displays
-    ![New Integration Screen](docs/new-integration.png "New Integration")
--   Give the integration a name. The rest of the fields can be left blank.
--   Select API on the left and grant access to all the resources.
-    ![API Access Grant Screen](docs/integration-all-apis-access.png "New Integration")
--   Click Save.
--   In the list of integrations, activate your integration.
--   To configure the starter kit, you will need the integration details (consumer key, consumer secret, access token, and access token secret).
+- In the Commerce Admin, navigate to System > Extensions > Integrations.
+- Click the `Add New Integration` button. The following screen displays
+  ![New Integration Screen](docs/imgs/new-integration.png "New Integration")
+- Give the integration a name. The rest of the fields can be left blank.
+- Select API on the left and grant access to all the resources.
+  ![API Access Grant Screen](docs/imgs/integration-all-apis-access.png "New Integration")
+- Click Save.
+- In the list of integrations, activate your integration.
+- To configure the connector, you will need the integration details (consumer key, consumer secret, access token, and access token secret).
 
 Store the credentials in the `.env` file, these are the minimum required values:
 
@@ -159,11 +145,11 @@ OAUTH_HOST=<string> # default: https://ims-na1.adobelogin.com
 
 #### How to use one or another?
 
-The starter kit is designed to work with both offerings, but only one of them at the same time. By default, (and to prevent breaking changes) the SaaS offering is opt-in, which means that you will need to explicitly configure it in order to start using it. **OAuth1** will be the first authentication mechanism tried before **IMS**.
+The Bluestone Connector is designed to work with both offerings, but only one of them at the same time. By default, (and to prevent breaking changes) the SaaS offering is opt-in, which means that you will need to explicitly configure it in order to start using it. **OAuth1** will be the first authentication mechanism tried before **IMS**.
 
--   If you want to use PaaS follow the [first guide above](#paas-commerce-oauth1---configure-a-new-integration-in-commerce) and make sure your environment variables `COMMERCE_XXXX` are set correctly in the `.env` file.
+- If you want to use PaaS follow the [first guide above](#paas-commerce-oauth1---configure-a-new-integration-in-commerce) and make sure your environment variables `COMMERCE_XXXX` are set correctly in the `.env` file.
 
--   If you want to use SaaS follow the [latter guide above](#saas-ims-oauth---add-the-oauth-server-to-server-credentials-to-the-environment) and make sure the environment variables `COMMERCE_XXXX` are **NOT SET** (blank) or deleted from the `.env` file.
+- If you want to use SaaS follow the [latter guide above](#saas-ims-oauth---add-the-oauth-server-to-server-credentials-to-the-environment) and make sure the environment variables `COMMERCE_XXXX` are **NOT SET** (blank) or deleted from the `.env` file.
 
 > [!NOTE]
 > You'll notice that the `app.config.yaml` has both types of environment variables declared (those are the ones that end up in the runtime action context). The code is built to work regardless of the offering you've configured, so you shouldn't need to modify anything in that file unless you want to do some cleanup.
@@ -210,9 +196,8 @@ IO_WORKSPACE_ID=your_workspace_id
 
 **How to configure:**
 
-1. In your Adobe Developer Console project, navigate to the "Adobe I/O Events" service
-2. Note your Consumer ID, Project ID, and Workspace ID from the service configuration
-3. These values are automatically provided when you add the I/O Events service
+1. In your Adobe Developer Console project, select workspace and click on the button "Download all"
+2. The JSON contains the necessary ids
 
 #### 3. Bluestone PIM API Configuration
 
@@ -289,12 +274,12 @@ ADOBE_COMMERCE_MAPPING_LANGUAGES='[
 
 **Configuration details:**
 
--   **`COMMERCE_ATTRIBUTE_GROUP_ID`**: Specifies which Adobe Commerce attribute group newly created attributes should be assigned to. All attributes are assigned to the default attribute set (ID: 4) and this specific group.
--   **`BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID`**: Identifies which Bluestone attribute group contains configurable product attributes. This is used to determine which attributes should be used for configurable product options.
--   **`ADOBE_COMMERCE_MAPPING_LANGUAGES`**: Maps Bluestone context IDs to Adobe Commerce store views for multi-store/multi-language support. Each mapping contains:
-    -   `commerceId`: Adobe Commerce store view ID
-    -   `commerceCode`: Adobe Commerce store view code
-    -   `externalId`: Bluestone context ID
+- **`COMMERCE_ATTRIBUTE_GROUP_ID`**: Specifies which Adobe Commerce attribute group newly created attributes should be assigned to. All attributes are assigned to the default attribute set (ID: 4) and this specific group.
+- **`BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID`**: Identifies which Bluestone attribute group contains configurable product attributes. This is used to determine which attributes should be used for configurable product options.
+- **`ADOBE_COMMERCE_MAPPING_LANGUAGES`**: Maps Bluestone context IDs to Adobe Commerce store views for multi-store/multi-language support. Each mapping contains:
+    - `commerceId`: Adobe Commerce store view ID
+    - `commerceCode`: Adobe Commerce store view code
+    - `externalId`: Bluestone context ID
 
 #### 6. Optional Configuration
 
@@ -308,146 +293,8 @@ NEW_RELIC_LICENSE_KEY=your_new_relic_license_key
 
 **Configuration details:**
 
--   **`LOG_LEVEL`**: Controls logging verbosity (debug, info, warn, error). Default is 'info'.
--   **`NEW_RELIC_LICENSE_KEY`**: Enables New Relic monitoring and observability for the integration.
-
-### Complete .env Template
-
-Create a `.env` file in the project root with the following template:
-
-```env
-# Logging Configuration
-LOG_LEVEL=debug
-
-# Adobe IMS OAuth Authentication
-OAUTH_BASE_URL=https://ims-na1.adobelogin.com/ims/token/
-OAUTH_CLIENT_ID=your_client_id_here
-OAUTH_CLIENT_SECRET=your_client_secret_here
-OAUTH_TECHNICAL_ACCOUNT_ID=your_technical_account_id@techacct.adobe.com
-OAUTH_TECHNICAL_ACCOUNT_EMAIL=your_technical_account_email@techacct.adobe.com
-OAUTH_ORG_ID=your_organization_id@AdobeOrg
-
-# Adobe I/O Events Configuration
-IO_MANAGEMENT_BASE_URL=https://api.adobe.io/events/
-IO_CONSUMER_ID=your_consumer_id
-IO_PROJECT_ID=your_project_id
-IO_WORKSPACE_ID=your_workspace_id
-
-# Bluestone PIM API Configuration
-BLUESTONE_PRIMARY_SECRET=your_primary_secret
-BLUESTONE_CLIENT_ID=your_client_id
-BLUESTONE_CLIENT_SECRET=your_client_secret
-BLUESTONE_OAUTH_URL=https://idp.your-bluestone-instance.com
-BLUESTONE_API_URL=https://api.your-bluestone-instance.com/v1
-BLUESTONE_API_KEY=your_api_key
-
-# Adobe Commerce API Configuration (PaaS)
-COMMERCE_BASE_URL=https://your-environment.magentosite.cloud/rest/
-COMMERCE_CONSUMER_KEY=your_consumer_key
-COMMERCE_CONSUMER_SECRET=your_consumer_secret
-COMMERCE_ACCESS_TOKEN=your_access_token
-COMMERCE_ACCESS_TOKEN_SECRET=your_access_token_secret
-
-# Integration-Specific Configuration
-COMMERCE_ATTRIBUTE_GROUP_ID=1305
-BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID=your_configurable_group_id
-ADOBE_COMMERCE_MAPPING_LANGUAGES='[{"commerceId": 0, "commerceCode": "all", "externalId": "en"}]'
-
-# Optional Configuration
-NEW_RELIC_LICENSE_KEY=your_new_relic_license_key
-```
-
-## Setup
-
-### Initial Setup
-
-If `.aio` file exists, remove it before running next commands:
-
-```bash
-rm .aio
-```
-
-Login to App Builder:
-
-```bash
-aio login
-```
-
-Choose project and workspace:
-
-```bash
-aio console project select
-aio console workspace select
-```
-
-Sync your local application with the App Builder project:
-
-```bash
-aio app use --merge
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Build the Project
-
-```bash
-npm run build
-```
-
-For development with watch mode:
-
-```bash
-npm run watch
-```
-
-### Deploy
-
-```bash
-aio app deploy
-```
-
-### Run Onboarding
-
-```bash
-npm run onboard
-```
-
-## Running the Project
-
-Start the application:
-
-```bash
-aio app run
-```
-
-By default, the app will run on `localhost:9080`.
-
-> **Warning**: This project uses TypeScript, so ensure the project is built before running the app.
-
-## Source Code Structure
-
-The source code is organized in the `actions-src` directory with the following key components:
-
-### Core Actions
-
--   **`ingestion/`**: Webhook handling and event publishing
--   **`sync/`**: Sync processing and data enrichment
--   **`attribute/`**: Attribute synchronization and mapping
--   **`category/`**: Category processing with dependency validation
--   **`product/`**: Two-stage product validation and processing
--   **`asset/`**: Media synchronization for product images
-
-### Utilities
-
--   **`utils/`**: Shared utilities for Adobe Commerce and Bluestone API clients
--   **`types/`**: TypeScript type definitions
--   **`chain-validator/`**: Validation chain implementation
--   **`concurrency/`**: Distributed locking and concurrency control
--   **`storage/`**: Persistent and temporary storage management
+- **`LOG_LEVEL`**: Controls logging verbosity (debug, info, warn, error). Default is 'info'.
+- **`NEW_RELIC_LICENSE_KEY`**: Enables New Relic monitoring and observability for the integration.
 
 ## Integration Details
 
@@ -464,16 +311,16 @@ The source code is organized in the `actions-src` directory with the following k
 
 Each entity type uses a validation chain:
 
--   **Removal Validator**: Handles entity deletions
--   **Hash Validator**: Detects actual changes using MD5 comparison
--   **Entity-Specific Validators**: Validates dependencies and requirements
+- **Removal Validator**: Handles entity deletions
+- **Hash Validator**: Detects actual changes using MD5 comparison
+- **Entity-Specific Validators**: Validates dependencies and requirements
 
 ### Error Handling
 
--   **599 Error Code**: Triggers automatic retries in Adobe I/O Events
--   **Dependency Resolution**: Missing entities trigger sync events for dependencies
--   **Validation Guard**: Prevents duplicate dependency requests during retries
--   **Concurrency Control**: Distributed locking prevents processing conflicts
+- **599 Error Code**: Triggers automatic retries in Adobe I/O Events
+- **Dependency Resolution**: Missing entities trigger sync events for dependencies
+- **Validation Guard**: Prevents duplicate dependency requests during retries
+- **Concurrency Control**: Distributed locking prevents processing conflicts
 
 ## Testing
 
@@ -481,12 +328,6 @@ Run unit tests:
 
 ```bash
 aio app test
-```
-
-Run end-to-end tests:
-
-```bash
-aio app test --e2e
 ```
 
 ## Deployment
@@ -507,9 +348,9 @@ aio app undeploy
 
 For detailed documentation, see:
 
--   **[User Guide](docs/USER_DOCUMENTATION.md)** - Complete step-by-step integration setup and usage guide
--   **[Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md)** - Comprehensive technical architecture and implementation details
--   **[Debug Guide](docs/DEBUG_GUIDE.md)** - Debug endpoint usage for inspecting hashes and mappings
+- **[User Guide](docs/USER_DOCUMENTATION.md)** - Complete step-by-step integration setup and usage guide
+- **[Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md)** - Comprehensive technical architecture and implementation details
+- **[Debug Guide](docs/DEBUG_GUIDE.md)** - Debug endpoint usage for inspecting hashes and mappings
 
 ## Full Sync Operations
 
@@ -517,9 +358,9 @@ The integration provides a full sync trigger action that allows you to manually 
 
 ### Supported Entity Types
 
--   **`attribute`** - Synchronize all or specific attributes from Bluestone to Adobe Commerce
--   **`category`** - Synchronize all or specific categories with dependency validation
--   **`product`** - Synchronize all or specific products with complete validation flow
+- **`attribute`** - Synchronize all or specific attributes from Bluestone to Adobe Commerce
+- **`category`** - Synchronize all or specific categories with dependency validation
+- **`product`** - Synchronize all or specific products with complete validation flow
 
 ### Full Sync API
 
@@ -544,10 +385,10 @@ POST /api/v1/web/full-sync/trigger
 
 **Parameters:**
 
--   **`entityType`** (required): The type of entities to synchronize
--   **`context`** (optional): Bluestone context ID, defaults to "default"
--   **`entityIds`** (optional): Array of specific entity IDs to sync. If omitted, syncs all entities
--   **`syncId`** (optional): Custom sync identifier. If omitted, generates UUID with prefix "full-sync-"
+- **`entityType`** (required): The type of entities to synchronize
+- **`context`** (optional): Bluestone context ID, defaults to "default"
+- **`entityIds`** (optional): Array of specific entity IDs to sync. If omitted, syncs all entities
+- **`syncId`** (optional): Custom sync identifier. If omitted, generates UUID with prefix "full-sync-"
 
 #### Response
 
@@ -613,22 +454,26 @@ curl -X POST "https://your-app-builder-endpoint/api/v1/web/full-sync/trigger" \
 
 ### Monitoring Full Sync
 
--   Monitor App Builder runtime logs for sync progress and any errors
--   Check Adobe I/O Events console for event publishing status
--   Use the `syncId` to trace related events throughout the system
--   Events will appear in logs with the specified or generated `syncId`
+- Monitor App Builder runtime logs for sync progress and any errors
+- Check Adobe I/O Events console for event publishing status
+- Use the `syncId` to trace related events throughout the system
+- Events will appear in logs with the specified or generated `syncId`
 
 ### Best Practices
 
--   **Start with Attributes**: Always sync attributes before categories and products to ensure dependencies exist
--   **Use Specific IDs**: For large catalogs, consider syncing specific entity IDs rather than all entities
--   **Monitor Resources**: Full syncs can generate many events; ensure your App Builder quotas can handle the load
--   **Custom Sync IDs**: Use meaningful sync IDs for easier tracking and debugging
+- **Start with Attributes**: Always sync attributes before categories and products to ensure dependencies exist
+- **Use Specific IDs**: For large catalogs, consider syncing specific entity IDs rather than all entities
+- **Monitor Resources**: Full syncs can generate many events; ensure your App Builder quotas can handle the load
+- **Custom Sync IDs**: Use meaningful sync IDs for easier tracking and debugging
 
 ### Error Handling
 
--   **Invalid Entity Type**: Returns 400 Bad Request with supported entity types
--   **API Failures**: Returns 500 Internal Server Error with detailed error message
--   **Empty Results**: Returns success response indicating no entities found
--   **Event Publishing Failures**: Individual entity failures are logged but don't stop the overall process
+- **Invalid Entity Type**: Returns 400 Bad Request with supported entity types
+- **API Failures**: Returns 500 Internal Server Error with detailed error message
+- **Empty Results**: Returns success response indicating no entities found
+- **Event Publishing Failures**: Individual entity failures are logged but don't stop the overall process
 
+## Links
+
+- **GitHub**: [https://github.com/vaimo/app-builder-bluestone-integration] (https://github.com/vaimo/app-builder-bluestone-integration)
+- **App Builder**: [https://developer.adobe.com/console/projects/619283/4566206088345404437/overview] (https://developer.adobe.com/console/projects/619283/4566206088345404437/overview)

@@ -276,10 +276,6 @@ Configurable products are parent products that contain multiple variants (child 
 
     ![Final Result](imgs/configurable_product_8.png)
 
-@TODO
-- explain store/context sync
-- explain removal sync
-
 ## Troubleshooting
 
 ### Common Issues
