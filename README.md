@@ -79,35 +79,76 @@ Webhook → SYNC_DONE → EntityToSynchronize → EntityDataReady → Processing
 
 ## Configuration
 
-> [!NOTE]
-> When configuring the `COMMERCE_BASE_URL` environment variable, the format differs between PaaS and SaaS:
+> **IMPORTANT:** All configuration is done by setting environment variables directly in your deployment environment (e.g., via the Adobe App Builder Console or your cloud provider's UI). You do **not** need to create a `.env` file or install the app locally.
+
+### Environment Variables
+
+| Variable Name                        | Required | Description                                                                 | Example Value                                                                                                                               |
+| ------------------------------------ | -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `COMMERCE_BASE_URL`                  | Yes      | Base URL for your Adobe Commerce REST API.                                  | `https://default.mystore.com/rest/` (PaaS) or `https://na1-sandbox.api.commerce.adobe.com/your-tenant-id/` (SaaS)                          |
+| `COMMERCE_CONSUMER_KEY`              | Cond.    | OAuth1 Consumer Key (PaaS only).                                            | `your_consumer_key`                                                                                                                         |
+| `COMMERCE_CONSUMER_SECRET`           | Cond.    | OAuth1 Consumer Secret (PaaS only).                                         | `your_consumer_secret`                                                                                                                      |
+| `COMMERCE_ACCESS_TOKEN`              | Cond.    | OAuth1 Access Token (PaaS only).                                            | `your_access_token`                                                                                                                         |
+| `COMMERCE_ACCESS_TOKEN_SECRET`       | Cond.    | OAuth1 Access Token Secret (PaaS only).                                     | `your_access_token_secret`                                                                                                                  |
+| `OAUTH_CLIENT_ID`                    | Cond.    | IMS OAuth Client ID (SaaS only).                                            | `your_client_id`                                                                                                                            |
+| `OAUTH_CLIENT_SECRET`                | Cond.    | IMS OAuth Client Secret (SaaS only).                                        | `your_client_secret`                                                                                                                        |
+| `OAUTH_SCOPES`                       | Cond.    | IMS OAuth Scopes (SaaS only, comma-separated).                              | `scope1,scope2`                                                                                                                             |
+| `OAUTH_HOST`                         | No       | (Optional) IMS OAuth Host.                                                  | `https://ims-na1.adobelogin.com`                                                                                                            |
+| `OAUTH_BASE_URL`                     | Cond.    | IMS OAuth Token Endpoint (SaaS only, advanced).                             | `https://ims-na1.adobelogin.com/ims/token/`                                                                                                 |
+| `OAUTH_TECHNICAL_ACCOUNT_ID`         | Cond.    | IMS Technical Account ID (SaaS only, advanced).                             | `your_technical_account_id@techacct.adobe.com`                                                                                              |
+| `OAUTH_TECHNICAL_ACCOUNT_EMAIL`      | Cond.    | IMS Technical Account Email (SaaS only, advanced).                          | `your_technical_account_email@techacct.adobe.com`                                                                                           |
+| `OAUTH_ORG_ID`                       | Cond.    | IMS Organization ID (SaaS only, advanced).                                  | `your_organization_id@AdobeOrg`                                                                                                             |
+| `IO_MANAGEMENT_BASE_URL`             | Yes      | Adobe I/O Events API base URL.                                              | `https://api.adobe.io/events/`                                                                                                              |
+| `IO_CONSUMER_ID`                     | Yes      | Adobe I/O Events Consumer ID.                                               | `your_consumer_id`                                                                                                                          |
+| `IO_PROJECT_ID`                      | Yes      | Adobe I/O Events Project ID.                                                | `your_project_id`                                                                                                                           |
+| `IO_WORKSPACE_ID`                    | Yes      | Adobe I/O Events Workspace ID.                                              | `your_workspace_id`                                                                                                                         |
+| `BLUESTONE_PRIMARY_SECRET`           | Yes      | Bluestone PIM Primary Secret.                                               | `your_primary_secret`                                                                                                                       |
+| `BLUESTONE_CLIENT_ID`                | Yes      | Bluestone PIM Client ID.                                                    | `your_client_id`                                                                                                                            |
+| `BLUESTONE_CLIENT_SECRET`            | Yes      | Bluestone PIM Client Secret.                                                | `your_client_secret`                                                                                                                        |
+| `BLUESTONE_OAUTH_URL`                | Yes      | Bluestone PIM OAuth URL.                                                    | `https://idp.your-bluestone-instance.com`                                                                                                   |
+| `BLUESTONE_API_URL`                  | Yes      | Bluestone PIM API URL.                                                      | `https://api.your-bluestone-instance.com/v1`                                                                                                |
+| `BLUESTONE_API_KEY`                  | Yes      | Bluestone PIM API Key.                                                      | `your_api_key`                                                                                                                              |
+| `COMMERCE_ATTRIBUTE_GROUP_ID`        | Yes      | Adobe Commerce attribute group for new attributes.                          | `1305`                                                                                                                                      |
+| `BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID` | Yes | Bluestone attribute group for configurable product attributes.              | `your_configurable_group_id`                                                                                                                |
+| `ADOBE_COMMERCE_MAPPING_LANGUAGES`   | Yes      | JSON array mapping Bluestone context IDs to Commerce store views.           | `[ {"commerceId": 0, "commerceCode": "all", "externalId": "en"} ]`                                                                 |
+| `LOG_LEVEL`                          | No       | (Optional) Logging verbosity.                                               | `debug`                                                                                                                                     |
+| `NEW_RELIC_LICENSE_KEY`              | No       | (Optional) New Relic license key for observability.                         | `your_new_relic_license_key`                                                                                                                |
+
+**Notes:**
+
+- Only set the variables relevant to your Adobe Commerce deployment (PaaS or SaaS). Leave the others blank or unset.
+- For `ADOBE_COMMERCE_MAPPING_LANGUAGES`, use a valid JSON array as shown in the example below.
+- Optional variables can be omitted unless you require the associated functionality.
+
+### Authentication: PaaS vs SaaS
+
+> **Note:** When configuring the `COMMERCE_BASE_URL` environment variable, the format differs between PaaS and SaaS:
 >
-> For PaaS (On-Premise/Cloud):
+> **For PaaS (On-Premise/Cloud):**
 >
 > - Must include your base site URL + `/rest/` suffix
 > - Example: `https://[environment-name].us-4.magentosite.cloud/rest/`
 >
-> For SaaS:
+> **For SaaS:**
 >
 > - Must be the REST API endpoint provided by Adobe Commerce
 > - Example: `https://na1-sandbox.api.commerce.adobe.com/[tenant-id]/`
 >
 > Make sure to use your actual environment name or tenant ID in the URL. The examples above use placeholder values.
 
-### Supported Auth types
+#### Supported Auth Types
 
 With the new announcement of **Adobe Commerce as a Cloud Service** (ACCS), requests to Commerce will now use different authentication strategies depending on the flavor you're using:
 
-- If you're using the traditional Adobe Commerce Platform (PaaS) offering, you'll need to authenticate via OAuth1, like you've been doing until now.
+- If you're using the traditional Adobe Commerce Platform (PaaS) offering, you'll need to authenticate via OAuth1, as before.
+- If you're using the new cloud service (SaaS) offering, you'll need to authenticate your requests using [Adobe Identity Management System (IMS)](https://experienceleague.adobe.com/en/docs/experience-manager-learn/foundation/authentication/adobe-ims-authentication-technical-video-understand).
 
-- If you're using the new cloud service (SaaS) offering, you'll need to authenticate your requests using [Adobe Identity Management System](https://experienceleague.adobe.com/en/docs/experience-manager-learn/foundation/authentication/adobe-ims-authentication-technical-video-understand) (IMS).
-
-#### \[PaaS\] Commerce OAuth1 - Configure a new Integration in Commerce
+#### [PaaS] Commerce OAuth1 - Configure a new Integration in Commerce
 
 Configure a new Integration to secure the calls to Commerce from App Builder using OAuth by following these steps:
 
-- In the Commerce Admin, navigate to System > Extensions > Integrations.
-- Click the `Add New Integration` button. The following screen displays
+- In the Commerce Admin, navigate to System > Integrations.
+- Click the `Add New Integration` button. The following screen displays:
   ![New Integration Screen](docs/imgs/new-integration.png "New Integration")
 - Give the integration a name. The rest of the fields can be left blank.
 - Select API on the left and grant access to all the resources.
@@ -116,185 +157,51 @@ Configure a new Integration to secure the calls to Commerce from App Builder usi
 - In the list of integrations, activate your integration.
 - To configure the connector, you will need the integration details (consumer key, consumer secret, access token, and access token secret).
 
-Store the credentials in the `.env` file, these are the minimum required values:
+Set the following environment variables in your deployment environment:
 
-```dotenv
-COMMERCE_CONSUMER_KEY=
-COMMERCE_CONSUMER_SECRET=
-COMMERCE_ACCESS_TOKEN=
-COMMERCE_ACCESS_TOKEN_SECRET=
-```
+- `COMMERCE_CONSUMER_KEY`
+- `COMMERCE_CONSUMER_SECRET`
+- `COMMERCE_ACCESS_TOKEN`
+- `COMMERCE_ACCESS_TOKEN_SECRET`
 
-#### \[SaaS\] IMS OAuth - Add the OAuth Server to Server credentials to the environment
+#### [SaaS] IMS OAuth - Add the OAuth Server to Server credentials
 
 Configure a new IMS OAuth Server to Server following this [documentation](https://developer.adobe.com/developer-console/docs/guides/authentication/ServerToServerAuthentication/implementation/#setting-up-the-oauth-server-to-server-credential/)
 
-Store the credentials in the `.env` file, these are the minimum required values:
+Set the following environment variables in your deployment environment:
 
-```dotenv
-OAUTH_CLIENT_ID=<string> # Your client ID
-OAUTH_CLIENT_SECRET=<string> # Your client secret
-OAUTH_SCOPES=<array> # ['scope1', 'scope2']
-```
+- `OAUTH_CLIENT_ID` (your client ID)
+- `OAUTH_CLIENT_SECRET` (your client secret)
+- `OAUTH_SCOPES` (comma-separated, e.g. `scope1,scope2`)
 
-These are optional values that can be provided:
+Optional:
 
-```dotenv
-OAUTH_HOST=<string> # default: https://ims-na1.adobelogin.com
-```
+- `OAUTH_HOST` (default: `https://ims-na1.adobelogin.com`)
 
 #### How to use one or another?
 
-The Bluestone Connector is designed to work with both offerings, but only one of them at the same time. By default, (and to prevent breaking changes) the SaaS offering is opt-in, which means that you will need to explicitly configure it in order to start using it. **OAuth1** will be the first authentication mechanism tried before **IMS**.
+The Bluestone Connector is designed to work with both offerings, but only one of them at the same time. By default (and to prevent breaking changes), the SaaS offering is opt-in, which means that you will need to explicitly configure it in order to start using it. **OAuth1** will be the first authentication mechanism tried before **IMS**.
 
-- If you want to use PaaS follow the [first guide above](#paas-commerce-oauth1---configure-a-new-integration-in-commerce) and make sure your environment variables `COMMERCE_XXXX` are set correctly in the `.env` file.
+- If you want to use PaaS, follow the steps above and make sure your environment variables `COMMERCE_XXXX` are set correctly.
+- If you want to use SaaS, follow the steps above and make sure the environment variables `COMMERCE_XXXX` are **NOT SET** (blank) or deleted from your deployment environment.
 
-- If you want to use SaaS follow the [latter guide above](#saas-ims-oauth---add-the-oauth-server-to-server-credentials-to-the-environment) and make sure the environment variables `COMMERCE_XXXX` are **NOT SET** (blank) or deleted from the `.env` file.
+### Store/Language Mapping Example
 
-> [!NOTE]
-> You'll notice that the `app.config.yaml` has both types of environment variables declared (those are the ones that end up in the runtime action context). The code is built to work regardless of the offering you've configured, so you shouldn't need to modify anything in that file unless you want to do some cleanup.
+Example value for `ADOBE_COMMERCE_MAPPING_LANGUAGES`:
 
-## Environment Variables Configuration
-
-The integration requires several environment variables to be configured for proper operation. These variables are organized into different categories based on their purpose and the services they connect to.
-
-### Configuration Categories
-
-#### 1. Adobe IMS OAuth Authentication
-
-These variables are required for Adobe Identity Management System (IMS) authentication and are used for both Adobe I/O Events and Adobe Commerce SaaS authentication.
-
-```env
-# Adobe IMS OAuth Configuration
-OAUTH_BASE_URL=https://ims-na1.adobelogin.com/ims/token/
-OAUTH_CLIENT_ID=your_client_id_here
-OAUTH_CLIENT_SECRET=your_client_secret_here
-OAUTH_TECHNICAL_ACCOUNT_ID=your_technical_account_id@techacct.adobe.com
-OAUTH_TECHNICAL_ACCOUNT_EMAIL=your_technical_account_email@techacct.adobe.com
-OAUTH_ORG_ID=your_organization_id@AdobeOrg
+```json
+[
+  { "commerceId": 0, "commerceCode": "all", "externalId": "en" },
+  { "commerceId": 6, "commerceCode": "german_store_view", "externalId": "l3682" }
+]
 ```
 
-**How to configure:**
-
-1. Go to [Adobe Developer Console](https://developer.adobe.com/console)
-2. Create a new project or select existing one
-3. Add the "Adobe I/O Events" service to your project
-4. Create a new OAuth Server-to-Server credential
-5. Copy the credentials from the generated configuration
-
-#### 2. Adobe I/O Events Configuration
-
-These variables configure the Adobe I/O Events service for event-driven communication.
-
-```env
-# Adobe I/O Events Configuration
-IO_MANAGEMENT_BASE_URL=https://api.adobe.io/events/
-IO_CONSUMER_ID=your_consumer_id
-IO_PROJECT_ID=your_project_id
-IO_WORKSPACE_ID=your_workspace_id
-```
-
-**How to configure:**
-
-1. In your Adobe Developer Console project, select workspace and click on the button "Download all"
-2. The JSON contains the necessary ids
-
-#### 3. Bluestone PIM API Configuration
-
-These variables configure the connection to your Bluestone PIM instance.
-
-```env
-# Bluestone PIM API Configuration
-BLUESTONE_PRIMARY_SECRET=your_primary_secret
-BLUESTONE_CLIENT_ID=your_client_id
-BLUESTONE_CLIENT_SECRET=your_client_secret
-BLUESTONE_OAUTH_URL=https://idp.your-bluestone-instance.com
-BLUESTONE_API_URL=https://api.your-bluestone-instance.com/v1
-BLUESTONE_API_KEY=your_api_key
-```
-
-**How to configure:**
-
-1. Contact your Bluestone PIM administrator to obtain API credentials
-2. Replace `your-bluestone-instance.com` with your actual Bluestone instance URL
-3. Ensure your Bluestone instance allows API access from App Builder IP ranges
-
-#### 4. Adobe Commerce API Configuration
-
-These variables configure the connection to your Adobe Commerce instance. The configuration differs between PaaS and SaaS offerings.
-
-**For PaaS (On-Premise/Cloud):**
-
-```env
-# Adobe Commerce PaaS Configuration
-COMMERCE_BASE_URL=https://your-environment.magentosite.cloud/rest/
-COMMERCE_CONSUMER_KEY=your_consumer_key
-COMMERCE_CONSUMER_SECRET=your_consumer_secret
-COMMERCE_ACCESS_TOKEN=your_access_token
-COMMERCE_ACCESS_TOKEN_SECRET=your_access_token_secret
-```
-
-**For SaaS (Adobe Commerce as a Cloud Service):**
-
-```env
-# Adobe Commerce SaaS Configuration
-COMMERCE_BASE_URL=https://na1-sandbox.api.commerce.adobe.com/your-tenant-id/
-# OAuth1 variables should be left empty for SaaS
-COMMERCE_CONSUMER_KEY=
-COMMERCE_CONSUMER_SECRET=
-COMMERCE_ACCESS_TOKEN=
-COMMERCE_ACCESS_TOKEN_SECRET=
-```
-
-**How to configure PaaS:**
-
-1. In Adobe Commerce Admin, go to System > Extensions > Integrations
-2. Create a new integration with API access to all resources
-3. Activate the integration and copy the OAuth credentials
-
-**How to configure SaaS:**
-
-1. Follow the [Adobe Commerce as a Cloud Service documentation](https://experienceleague.adobe.com/en/docs/commerce-cloud-service/user-guide/configure/saas/)
-2. Use IMS authentication instead of OAuth1
-3. Leave OAuth1 variables empty
-
-#### 5. Integration-Specific Configuration
-
-These variables control how the integration maps and processes data between Bluestone and Adobe Commerce.
-
-```env
-# Integration Configuration
-COMMERCE_ATTRIBUTE_GROUP_ID=1305
-BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID=your_configurable_group_id
-ADOBE_COMMERCE_MAPPING_LANGUAGES='[
-    {"commerceId": 0, "commerceCode": "all", "externalId": "en"},
-    {"commerceId": 6, "commerceCode": "german_store_view", "externalId": "l3682"}
-]'
-```
-
-**Configuration details:**
-
-- **`COMMERCE_ATTRIBUTE_GROUP_ID`**: Specifies which Adobe Commerce attribute group newly created attributes should be assigned to. All attributes are assigned to the default attribute set (ID: 4) and this specific group.
-- **`BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID`**: Identifies which Bluestone attribute group contains configurable product attributes. This is used to determine which attributes should be used for configurable product options.
-- **`ADOBE_COMMERCE_MAPPING_LANGUAGES`**: Maps Bluestone context IDs to Adobe Commerce store views for multi-store/multi-language support. Each mapping contains:
-    - `commerceId`: Adobe Commerce store view ID
-    - `commerceCode`: Adobe Commerce store view code
-    - `externalId`: Bluestone context ID
-
-#### 6. Optional Configuration
-
-These variables are optional and provide additional functionality.
-
-```env
-# Optional Configuration
-LOG_LEVEL=debug
-NEW_RELIC_LICENSE_KEY=your_new_relic_license_key
-```
-
-**Configuration details:**
+### Logging and Observability (Optional)
 
 - **`LOG_LEVEL`**: Controls logging verbosity (debug, info, warn, error). Default is 'info'.
 - **`NEW_RELIC_LICENSE_KEY`**: Enables New Relic monitoring and observability for the integration.
+
+---
 
 ## Integration Details
 
