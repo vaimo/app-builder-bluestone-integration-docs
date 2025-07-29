@@ -4,7 +4,7 @@ This project is a comprehensive event-driven system that synchronizes product, c
 
 ## Architecture Overview
 
-The integration follows a multi-stage event-driven process designed for reliability and data consistency:
+The integration follows a multi-stage event-driven process designed for reliability and data consistency. It includes built-in OpenTelemetry instrumentation for distributed tracing and log forwarding (see Logging and Observability).
 
 1. **Sync Trigger**: Bluestone completes a sync operation and sends a webhook notification
 2. **Event Processing**: App Builder ingestion webhook validates and publishes sync events
@@ -83,36 +83,37 @@ Webhook → SYNC_DONE → EntityToSynchronize → EntityDataReady → Processing
 
 ### Environment Variables
 
-| Variable Name                        | Required | Description                                                                 | Example Value                                                                                                                               |
-| ------------------------------------ | -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `COMMERCE_BASE_URL`                  | Yes      | Base URL for your Adobe Commerce REST API.                                  | `https://default.mystore.com/rest/` (PaaS) or `https://na1-sandbox.api.commerce.adobe.com/your-tenant-id/` (SaaS)                          |
-| `COMMERCE_CONSUMER_KEY`              | Cond.    | OAuth1 Consumer Key (PaaS only).                                            | `your_consumer_key`                                                                                                                         |
-| `COMMERCE_CONSUMER_SECRET`           | Cond.    | OAuth1 Consumer Secret (PaaS only).                                         | `your_consumer_secret`                                                                                                                      |
-| `COMMERCE_ACCESS_TOKEN`              | Cond.    | OAuth1 Access Token (PaaS only).                                            | `your_access_token`                                                                                                                         |
-| `COMMERCE_ACCESS_TOKEN_SECRET`       | Cond.    | OAuth1 Access Token Secret (PaaS only).                                     | `your_access_token_secret`                                                                                                                  |
-| `OAUTH_CLIENT_ID`                    | Cond.    | IMS OAuth Client ID (SaaS only).                                            | `your_client_id`                                                                                                                            |
-| `OAUTH_CLIENT_SECRET`                | Cond.    | IMS OAuth Client Secret (SaaS only).                                        | `your_client_secret`                                                                                                                        |
-| `OAUTH_SCOPES`                       | Cond.    | IMS OAuth Scopes (SaaS only, comma-separated).                              | `scope1,scope2`                                                                                                                             |
-| `OAUTH_HOST`                         | No       | (Optional) IMS OAuth Host.                                                  | `https://ims-na1.adobelogin.com`                                                                                                            |
-| `OAUTH_BASE_URL`                     | Cond.    | IMS OAuth Token Endpoint (SaaS only, advanced).                             | `https://ims-na1.adobelogin.com/ims/token/`                                                                                                 |
-| `OAUTH_TECHNICAL_ACCOUNT_ID`         | Cond.    | IMS Technical Account ID (SaaS only, advanced).                             | `your_technical_account_id@techacct.adobe.com`                                                                                              |
-| `OAUTH_TECHNICAL_ACCOUNT_EMAIL`      | Cond.    | IMS Technical Account Email (SaaS only, advanced).                          | `your_technical_account_email@techacct.adobe.com`                                                                                           |
-| `OAUTH_ORG_ID`                       | Cond.    | IMS Organization ID (SaaS only, advanced).                                  | `your_organization_id@AdobeOrg`                                                                                                             |
-| `IO_MANAGEMENT_BASE_URL`             | Yes      | Adobe I/O Events API base URL.                                              | `https://api.adobe.io/events/`                                                                                                              |
-| `IO_CONSUMER_ID`                     | Yes      | Adobe I/O Events Consumer ID.                                               | `your_consumer_id`                                                                                                                          |
-| `IO_PROJECT_ID`                      | Yes      | Adobe I/O Events Project ID.                                                | `your_project_id`                                                                                                                           |
-| `IO_WORKSPACE_ID`                    | Yes      | Adobe I/O Events Workspace ID.                                              | `your_workspace_id`                                                                                                                         |
-| `BLUESTONE_PRIMARY_SECRET`           | Yes      | Bluestone PIM Primary Secret.                                               | `your_primary_secret`                                                                                                                       |
-| `BLUESTONE_CLIENT_ID`                | Yes      | Bluestone PIM Client ID.                                                    | `your_client_id`                                                                                                                            |
-| `BLUESTONE_CLIENT_SECRET`            | Yes      | Bluestone PIM Client Secret.                                                | `your_client_secret`                                                                                                                        |
-| `BLUESTONE_OAUTH_URL`                | Yes      | Bluestone PIM OAuth URL.                                                    | `https://idp.your-bluestone-instance.com`                                                                                                   |
-| `BLUESTONE_API_URL`                  | Yes      | Bluestone PIM API URL.                                                      | `https://api.your-bluestone-instance.com/v1`                                                                                                |
-| `BLUESTONE_API_KEY`                  | Yes      | Bluestone PIM API Key.                                                      | `your_api_key`                                                                                                                              |
-| `COMMERCE_ATTRIBUTE_GROUP_ID`        | Yes      | Adobe Commerce attribute group for new attributes.                          | `1305`                                                                                                                                      |
-| `BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID` | Yes | Bluestone attribute group for configurable product attributes.              | `your_configurable_group_id`                                                                                                                |
-| `ADOBE_COMMERCE_MAPPING_LANGUAGES`   | Yes      | JSON array mapping Bluestone context IDs to Commerce store views.           | `[ {"commerceId": 0, "commerceCode": "all", "externalId": "en"} ]`                                                                 |
-| `LOG_LEVEL`                          | No       | (Optional) Logging verbosity.                                               | `debug`                                                                                                                                     |
-| `NEW_RELIC_LICENSE_KEY`              | No       | (Optional) New Relic license key for observability.                         | `your_new_relic_license_key`                                                                                                                |
+| Variable Name                               | Required | Description                                                       | Example Value                                                                                                     |
+| ------------------------------------------- | -------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `COMMERCE_BASE_URL`                         | Yes      | Base URL for your Adobe Commerce REST API.                        | `https://default.mystore.com/rest/` (PaaS) or `https://na1-sandbox.api.commerce.adobe.com/your-tenant-id/` (SaaS) |
+| `COMMERCE_CONSUMER_KEY`                     | Cond.    | OAuth1 Consumer Key (PaaS only).                                  | `your_consumer_key`                                                                                               |
+| `COMMERCE_CONSUMER_SECRET`                  | Cond.    | OAuth1 Consumer Secret (PaaS only).                               | `your_consumer_secret`                                                                                            |
+| `COMMERCE_ACCESS_TOKEN`                     | Cond.    | OAuth1 Access Token (PaaS only).                                  | `your_access_token`                                                                                               |
+| `COMMERCE_ACCESS_TOKEN_SECRET`              | Cond.    | OAuth1 Access Token Secret (PaaS only).                           | `your_access_token_secret`                                                                                        |
+| `OAUTH_CLIENT_ID`                           | Cond.    | IMS OAuth Client ID (SaaS only).                                  | `your_client_id`                                                                                                  |
+| `OAUTH_CLIENT_SECRET`                       | Cond.    | IMS OAuth Client Secret (SaaS only).                              | `your_client_secret`                                                                                              |
+| `OAUTH_SCOPES`                              | Cond.    | IMS OAuth Scopes (SaaS only, comma-separated).                    | `scope1,scope2`                                                                                                   |
+| `OAUTH_HOST`                                | No       | (Optional) IMS OAuth Host.                                        | `https://ims-na1.adobelogin.com`                                                                                  |
+| `OAUTH_BASE_URL`                            | Cond.    | IMS OAuth Token Endpoint (SaaS only, advanced).                   | `https://ims-na1.adobelogin.com/ims/token/`                                                                       |
+| `OAUTH_TECHNICAL_ACCOUNT_ID`                | Cond.    | IMS Technical Account ID (SaaS only, advanced).                   | `your_technical_account_id@techacct.adobe.com`                                                                    |
+| `OAUTH_TECHNICAL_ACCOUNT_EMAIL`             | Cond.    | IMS Technical Account Email (SaaS only, advanced).                | `your_technical_account_email@techacct.adobe.com`                                                                 |
+| `OAUTH_ORG_ID`                              | Cond.    | IMS Organization ID (SaaS only, advanced).                        | `your_organization_id@AdobeOrg`                                                                                   |
+| `IO_MANAGEMENT_BASE_URL`                    | Yes      | Adobe I/O Events API base URL.                                    | `https://api.adobe.io/events/`                                                                                    |
+| `IO_CONSUMER_ID`                            | Yes      | Adobe I/O Events Consumer ID.                                     | `your_consumer_id`                                                                                                |
+| `IO_PROJECT_ID`                             | Yes      | Adobe I/O Events Project ID.                                      | `your_project_id`                                                                                                 |
+| `IO_WORKSPACE_ID`                           | Yes      | Adobe I/O Events Workspace ID.                                    | `your_workspace_id`                                                                                               |
+| `BLUESTONE_PRIMARY_SECRET`                  | Yes      | Bluestone PIM Primary Secret.                                     | `your_primary_secret`                                                                                             |
+| `BLUESTONE_CLIENT_ID`                       | Yes      | Bluestone PIM Client ID.                                          | `your_client_id`                                                                                                  |
+| `BLUESTONE_CLIENT_SECRET`                   | Yes      | Bluestone PIM Client Secret.                                      | `your_client_secret`                                                                                              |
+| `BLUESTONE_OAUTH_URL`                       | Yes      | Bluestone PIM OAuth URL.                                          | `https://idp.your-bluestone-instance.com`                                                                         |
+| `BLUESTONE_API_URL`                         | Yes      | Bluestone PIM API URL.                                            | `https://api.your-bluestone-instance.com/v1`                                                                      |
+| `BLUESTONE_API_KEY`                         | Yes      | Bluestone PIM API Key.                                            | `your_api_key`                                                                                                    |
+| `COMMERCE_ATTRIBUTE_GROUP_ID`               | Yes      | Adobe Commerce attribute group for new attributes.                | `1305`                                                                                                            |
+| `BLUESTONE_CONFIGURABLE_ATTRIBUTE_GROUP_ID` | Yes      | Bluestone attribute group for configurable product attributes.    | `your_configurable_group_id`                                                                                      |
+| `ADOBE_COMMERCE_MAPPING_LANGUAGES`          | Yes      | JSON array mapping Bluestone context IDs to Commerce store views. | `[ {"commerceId": 0, "commerceCode": "all", "externalId": "en"} ]`                                                |
+| `LOG_LEVEL`                                 | No       | (Optional) Logging verbosity.                                     | `debug`                                                                                                           |
+| `NEW_RELIC_LICENSE_KEY`                     | No       | (Optional) New Relic license key for observability.               | `your_new_relic_license_key`                                                                                      |
+| `NEW_RELIC_OTLP_ENDPOINT`                   | No       | New Relic OTLP endpoint for OpenTelemetry log/tracing forwarding. | `https://otlp.eu01.nr-data.net:443`                                                                               |
 
 **Notes:**
 
@@ -191,8 +192,8 @@ Example value for `ADOBE_COMMERCE_MAPPING_LANGUAGES`:
 
 ```json
 [
-  { "commerceId": 0, "commerceCode": "all", "externalId": "en" },
-  { "commerceId": 6, "commerceCode": "german_store_view", "externalId": "l3682" }
+    { "commerceId": 0, "commerceCode": "all", "externalId": "en" },
+    { "commerceId": 6, "commerceCode": "german_store_view", "externalId": "l3682" }
 ]
 ```
 
@@ -200,6 +201,24 @@ Example value for `ADOBE_COMMERCE_MAPPING_LANGUAGES`:
 
 - **`LOG_LEVEL`**: Controls logging verbosity (debug, info, warn, error). Default is 'info'.
 - **`NEW_RELIC_LICENSE_KEY`**: Enables New Relic monitoring and observability for the integration.
+- **`NEW_RELIC_OTLP_ENDPOINT`**: (Optional) If set, enables automatic forwarding of logs and tracing data to New Relic via OpenTelemetry. Must be used together with `NEW_RELIC_LICENSE_KEY`. Example: `https://otlp.eu01.nr-data.net:443`
+
+#### OpenTelemetry Integration
+
+This integration supports OpenTelemetry for distributed tracing and log forwarding. When `NEW_RELIC_OTLP_ENDPOINT` is set (typically to `https://otlp.eu01.nr-data.net:443`) and a valid `NEW_RELIC_LICENSE_KEY` is provided, all logs and traces are automatically forwarded to New Relic. This enables advanced observability, distributed tracing, and log analytics in your New Relic dashboard.
+
+**Example configuration:**
+
+| Variable Name             | Required | Description                                                       | Example Value                       |
+| ------------------------- | -------- | ----------------------------------------------------------------- | ----------------------------------- |
+| `NEW_RELIC_LICENSE_KEY`   | No       | New Relic license key for observability.                          | `your_new_relic_license_key`        |
+| `NEW_RELIC_OTLP_ENDPOINT` | No       | New Relic OTLP endpoint for OpenTelemetry log/tracing forwarding. | `https://otlp.eu01.nr-data.net:443` |
+
+**How it works:**
+
+- When both variables are set, the integration will automatically forward all supported logs and traces to New Relic using the OTLP protocol.
+- No additional code changes are required; instrumentation is handled internally via OpenTelemetry.
+- For more details, see the [Technical Documentation](docs/TECHNICAL_DOCUMENTATION.md#opentelemetry-and-new-relic-integration).
 
 ---
 
